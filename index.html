@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1220" />
+  <title>Мой ритм — планер</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">✦</span><div><p class="eyebrow">личный планер</p><h1>Мой ритм</h1></div></div>
+      <button class="button button-primary" id="addTaskButton" type="button"><span>＋</span> Новая задача</button>
+    </header>
+
+    <div class="workspace">
+      <section class="calendar-panel" aria-label="Календарь">
+        <div class="calendar-toolbar">
+          <div><p class="eyebrow">расписание</p><h2 id="monthTitle"></h2></div>
+          <div class="toolbar-actions"><button class="icon-button" id="previousMonth" aria-label="Предыдущий месяц">‹</button><button class="today-button" id="todayButton" type="button">Сегодня</button><button class="icon-button" id="nextMonth" aria-label="Следующий месяц">›</button></div>
+        </div>
+        <div class="weekdays" aria-hidden="true"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+        <div class="legend"><span><i class="traffic-dot green"></i> спокойно · 0–3</span><span><i class="traffic-dot yellow"></i> средняя нагрузка · 4–6</span><span><i class="traffic-dot red"></i> очень занят · 7+</span></div>
+      </section>
+
+      <aside class="notes-panel">
+        <div class="notes-heading"><div><p class="eyebrow">без даты</p><h2>Не забыть</h2></div><span class="notes-count" id="notesCount">0</span></div>
+        <p class="muted">Идеи и дела, которым пока не нужен конкретный день.</p>
+        <form class="note-form" id="noteForm"><input id="noteInput" aria-label="Новая заметка" placeholder="Например, купить подарок" maxlength="120" required /><button class="button button-secondary" type="submit">Добавить</button></form>
+        <div class="notes-list" id="notesList"></div>
+      </aside>
+    </div>
+  </main>
+
+  <div class="modal-backdrop hidden" id="dayModal" role="dialog" aria-modal="true" aria-labelledby="dayModalTitle"><div class="modal"><button class="close-button" data-close="dayModal" aria-label="Закрыть">×</button><p class="eyebrow">подробности дня</p><h2 id="dayModalTitle"></h2><div id="dayTaskList" class="day-task-list"></div><button class="button button-primary full-width" id="addDayTaskButton" type="button">＋ Добавить задачу</button></div></div>
+
+  <div class="modal-backdrop hidden" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle"><div class="modal task-modal"><button class="close-button" data-close="taskModal" aria-label="Закрыть">×</button><p class="eyebrow">задача</p><h2 id="taskModalTitle">Новая задача</h2><form id="taskForm" class="task-form"><input type="hidden" id="taskId" /><label>Название <input id="taskTitle" required maxlength="100" placeholder="Например, подготовить отчёт" /></label><div class="form-row"><label>Дата <input id="taskDate" type="date" required /></label><label>Время <input id="taskTime" type="time" /></label></div><label>Категория <select id="taskCategory" required><option value="Работа">Работа</option><option value="Личные дела">Личные дела</option><option value="Покупки">Покупки</option><option value="Спорт">Спорт</option><option value="Иное">Иное</option></select></label><label>Описание <textarea id="taskDescription" rows="3" maxlength="300" placeholder="Детали, которые помогут не забыть контекст"></textarea></label><div class="form-actions"><button class="button button-ghost" type="button" data-close="taskModal">Отмена</button><button class="button button-primary" type="submit">Сохранить</button></div></form></div></div>
+  <script src="app.js"></script>
+</body>
+</html>
