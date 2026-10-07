@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <radialGradient id="baseGlow" cx="41%" cy="42%" r="66%" gradientTransform="matrix(1 0 0 .82 0 .08)">
+      <stop offset="0" stop-color="#c9f1ff"/>
+      <stop offset=".18" stop-color="#70c9ff"/>
+      <stop offset=".43" stop-color="#2676eb"/>
+      <stop offset=".72" stop-color="#102b69"/>
+      <stop offset="1" stop-color="#050810"/>
+    </radialGradient>
+    <radialGradient id="flowGlow" cx="34%" cy="40%" r="62%">
+      <stop offset="0" stop-color="#e2f8ff" stop-opacity=".82"/>
+      <stop offset=".31" stop-color="#8bdcff" stop-opacity=".52"/>
+      <stop offset="1" stop-color="#348bff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blurGlow" x="-30%" y="-40%" width="170%" height="180%">
+      <feGaussianBlur stdDeviation="76"/>
+    </filter>
+    <radialGradient id="edgeShade" cx="50%" cy="48%" r="72%">
+      <stop offset=".48" stop-color="#02040a" stop-opacity="0"/>
+      <stop offset="1" stop-color="#02040a" stop-opacity=".74"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="#050810"/>
+  <rect width="1024" height="1024" fill="url(#baseGlow)"/>
+  <ellipse cx="430" cy="450" rx="620" ry="430" fill="url(#flowGlow)" filter="url(#blurGlow)"/>
+  <rect width="1024" height="1024" fill="url(#edgeShade)"/>
+  <path transform="translate(166 300) scale(7.6)" fill="#000" d="M12 8c-5 0-7 5-7 20s2 20 7 20 7-5 7-20-2-20-7-20Zm20-2c-5 0-7 5-7 22s2 22 7 22 7-5 7-22-2-22-7-22Zm20 4c-4 0-6 5-6 18s2 18 6 18 6-5 6-18-2-18-6-18Zm18 5c-4 0-5 4-5 13s1 13 5 13 5-4 5-13-1-13-5-13Zm16 5c-3 0-4 3-4 8s1 8 4 8 4-3 4-8-1-8-4-8Z"/>
+</svg>
