@@ -2,41 +2,63 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b1220" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#080b12" />
   <title>Мой ритм — планер</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <main class="app-shell">
-    <header class="topbar">
-      <div class="brand"><span class="brand-mark">✦</span><div><p class="eyebrow">личный планер</p><h1>Мой ритм</h1></div></div>
-      <button class="button button-primary" id="addTaskButton" type="button"><span>＋</span> Новая задача</button>
-    </header>
-
-    <div class="workspace">
-      <section class="calendar-panel" aria-label="Календарь">
-        <div class="calendar-toolbar">
-          <div><p class="eyebrow">расписание</p><h2 id="monthTitle"></h2></div>
-          <div class="toolbar-actions"><button class="icon-button" id="previousMonth" aria-label="Предыдущий месяц">‹</button><button class="today-button" id="todayButton" type="button">Сегодня</button><button class="icon-button" id="nextMonth" aria-label="Следующий месяц">›</button></div>
-        </div>
-        <div class="weekdays" aria-hidden="true"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-        <div class="legend"><span><i class="traffic-dot green"></i> спокойно · 0–3</span><span><i class="traffic-dot yellow"></i> средняя нагрузка · 4–6</span><span><i class="traffic-dot red"></i> очень занят · 7+</span></div>
-      </section>
-
-      <aside class="notes-panel">
-        <div class="notes-heading"><div><p class="eyebrow">без даты</p><h2>Не забыть</h2></div><span class="notes-count" id="notesCount">0</span></div>
-        <p class="muted">Идеи и дела, которым пока не нужен конкретный день.</p>
-        <form class="note-form" id="noteForm"><input id="noteInput" aria-label="Новая заметка" placeholder="Например, купить подарок" maxlength="120" required /><button class="button button-secondary" type="submit">Добавить</button></form>
-        <div class="notes-list" id="notesList"></div>
-      </aside>
+<body class="welcome-active">
+  <main id="homeScreen" class="home-screen">
+    <section class="welcome-copy" aria-label="Мой ритм. Всё важное в своём темпе">
+      <svg class="welcome-logo" viewBox="0 0 120 56" aria-hidden="true"><defs><linearGradient id="waveMark" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e5f5ff"/><stop offset=".5" stop-color="#83c7ff"/><stop offset="1" stop-color="#438cff"/></linearGradient></defs><path d="M12 8c-5 0-7 5-7 20s2 20 7 20 7-5 7-20-2-20-7-20Zm20-2c-5 0-7 5-7 22s2 22 7 22 7-5 7-22-2-22-7-22Zm20 4c-4 0-6 5-6 18s2 18 6 18 6-5 6-18-2-18-6-18Zm18 5c-4 0-5 4-5 13s1 13 5 13 5-4 5-13-1-13-5-13Zm16 5c-3 0-4 3-4 8s1 8 4 8 4-3 4-8-1-8-4-8Z" fill="url(#waveMark)"/></svg>
+      <h1 class="welcome-title">Мой ритм</h1>
+      <p class="welcome-tagline">Всё важное в своём темпе</p>
+    </section>
+    <div class="start-slider" id="startSliderShell">
+      <div class="start-track" aria-hidden="true"><span>Перейти в календарь</span><span class="start-chevrons">››</span></div>
+      <span id="startSliderThumb" class="start-thumb" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 16h19M17 8l8 8-8 8"/></svg></span>
+      <input id="startSlider" class="start-range" type="range" min="0" max="100" step="5" value="0" aria-label="Передвиньте стрелку вправо, чтобы перейти в календарь" />
     </div>
   </main>
-
-  <div class="modal-backdrop hidden" id="dayModal" role="dialog" aria-modal="true" aria-labelledby="dayModalTitle"><div class="modal"><button class="close-button" data-close="dayModal" aria-label="Закрыть">×</button><p class="eyebrow">подробности дня</p><h2 id="dayModalTitle"></h2><div id="dayTaskList" class="day-task-list"></div><button class="button button-primary full-width" id="addDayTaskButton" type="button">＋ Добавить задачу</button></div></div>
-
-  <div class="modal-backdrop hidden" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle"><div class="modal task-modal"><button class="close-button" data-close="taskModal" aria-label="Закрыть">×</button><p class="eyebrow">задача</p><h2 id="taskModalTitle">Новая задача</h2><form id="taskForm" class="task-form"><input type="hidden" id="taskId" /><label>Название <input id="taskTitle" required maxlength="100" placeholder="Например, подготовить отчёт" /></label><div class="form-row"><label>Дата <input id="taskDate" type="date" required /></label><label>Время <input id="taskTime" type="time" /></label></div><label>Категория <select id="taskCategory" required><option value="Работа">Работа</option><option value="Личные дела">Личные дела</option><option value="Покупки">Покупки</option><option value="Спорт">Спорт</option><option value="Иное">Иное</option></select></label><label>Описание <textarea id="taskDescription" rows="3" maxlength="300" placeholder="Детали, которые помогут не забыть контекст"></textarea></label><div class="form-actions"><button class="button button-ghost" type="button" data-close="taskModal">Отмена</button><button class="button button-primary" type="submit">Сохранить</button></div></form></div></div>
-  <script src="app.js"></script>
+  <main id="plannerScreen" class="app-shell hidden">
+    <header class="topbar planner-topbar"><a class="planner-home-link" href="#home" aria-label="На главную"><svg viewBox="0 0 120 56" aria-hidden="true"><path d="M12 8c-5 0-7 5-7 20s2 20 7 20 7-5 7-20-2-20-7-20Zm20-2c-5 0-7 5-7 22s2 22 7 22 7-5 7-22-2-22-7-22Zm20 4c-4 0-6 5-6 18s2 18 6 18 6-5 6-18-2-18-6-18Zm18 5c-4 0-5 4-5 13s1 13 5 13 5-4 5-13-1-13-5-13Zm16 5c-3 0-4 3-4 8s1 8 4 8 4-3 4-8-1-8-4-8Z"/></svg></a></header>
+    <div id="connectionError" class="connection-error hidden" role="alert"></div>
+    <section class="calendar-panel" aria-label="Календарь">
+      <div class="calendar-toolbar">
+        <div><p class="eyebrow">моё расписание</p><h1 id="periodTitle"></h1></div>
+        <div class="view-switch" role="group" aria-label="Вид календаря"><button id="weekViewButton" class="selected" type="button">Неделя</button><button id="monthViewButton" type="button">Месяц</button></div>
+      </div>
+      <div class="calendar-controls"><div class="toolbar-actions"><button class="icon-button" id="previousPeriod" type="button" aria-label="Назад"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button class="today-button" id="todayButton" type="button">Сегодня</button><button class="icon-button" id="nextPeriod" type="button" aria-label="Вперёд"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><button id="addVisibleTaskButton" class="text-button" type="button">＋ Добавить задачу</button></div>
+      <div id="calendarContent"></div>
+      <div class="legend" aria-label="Значение индикатора загруженности"><span><i class="traffic-dot green"></i> до 2 дел</span><span><i class="traffic-dot yellow"></i> 3–4 дела</span><span><i class="traffic-dot red"></i> 5 и больше</span></div>
+    </section>
+    <section class="side-lists" aria-label="Списки">
+      <details class="list-panel" id="notesPanel"><summary><span><strong>Не забыть</strong></span><span class="list-count" id="notesCount">0</span></summary><div class="list-content"><p class="muted">Идеи и дела, которым пока не нужен конкретный день.</p><form class="add-row" id="noteForm"><input id="noteInput" placeholder="Добавить заметку" maxlength="120" required /><button class="button button-secondary" type="submit">Добавить</button></form><div id="notesList" class="items-list"></div></div></details>
+      <details class="list-panel" id="shoppingPanel"><summary><span><strong>Список покупок</strong></span><span class="list-count" id="shoppingCount">0</span></summary><div class="list-content"><form class="add-row" id="shoppingForm"><input id="shoppingInput" placeholder="Что купить?" maxlength="120" required /><button class="button button-secondary" type="submit">Добавить</button></form><div id="shoppingList" class="items-list"></div></div></details>
+      <details class="list-panel" id="habitsPanel"><summary><span><strong>Трекер привычек</strong></span><span class="list-count" id="habitsCount">0</span></summary><div class="list-content"><form class="add-row" id="habitForm"><input id="habitInput" placeholder="Например, испанский" maxlength="80" required /><button class="button button-secondary" type="submit">Добавить</button></form><div id="habitList" class="items-list"></div></div></details>
+    </section>
+    <footer class="public-note" id="publicNote"><span id="syncStatus" class="sync-status" role="status">Загрузка…</span><span id="publicNoteText"></span><button id="downloadBackupButton" class="backup-button" type="button">Скачать копию</button></footer>
+  </main>
+  <div class="modal-backdrop hidden" id="dayModal" role="dialog" aria-modal="true" aria-labelledby="dayModalTitle"><section class="modal"><button class="close-button" data-close="dayModal" aria-label="Закрыть">×</button><p class="eyebrow">подробности дня</p><h2 id="dayModalTitle"></h2><div id="dayDetails"></div><button class="button button-primary full-width" id="addDayTaskButton" type="button">＋ Добавить задачу</button></section></div>
+  <div class="modal-backdrop hidden" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle"><section class="modal task-modal"><button class="close-button" data-close="taskModal" aria-label="Закрыть">×</button><p class="eyebrow">событие календаря</p><h2 id="taskModalTitle">Новая задача</h2><form id="taskForm" class="task-form">
+    <input id="taskId" type="hidden" /><input id="taskOccurrenceDate" type="hidden" />
+    <label>Время <input id="taskTime" type="text" inputmode="numeric" autocomplete="off" placeholder="09:30" maxlength="5" aria-describedby="timeHint" /><small id="timeHint">Формат 24 часа, например 09:30. Можно оставить пустым.</small></label>
+    <label>Название <input id="taskTitle" required maxlength="100" placeholder="Например, встреча с психологом" /></label>
+    <label>Категория <select id="taskCategory" required><option>Работа</option><option>Личные дела</option><option>Спорт</option><option>Иное</option></select></label>
+    <label>Описание <textarea id="taskDescription" rows="2" maxlength="300" placeholder="Необязательно"></textarea></label>
+    <label>Дата <input id="taskDate" type="date" required /></label>
+    <details class="repeat-options" id="repeatOptions"><summary>Повтор и напоминание</summary><label>Повтор<select id="repeatType"><option value="none">Не повторять</option><option value="weekly">В выбранные дни недели</option><option value="monthly-date">Ежемесячно — число месяца</option><option value="monthly-weekday">Ежемесячно — день недели</option></select></label>
+      <div id="weekdayPicker" class="weekday-picker hidden" aria-label="Дни недели"><label><input type="checkbox" value="1">Пн</label><label><input type="checkbox" value="2">Вт</label><label><input type="checkbox" value="3">Ср</label><label><input type="checkbox" value="4">Чт</label><label><input type="checkbox" value="5">Пт</label><label><input type="checkbox" value="6">Сб</label><label><input type="checkbox" value="0">Вс</label></div>
+      <label id="monthlyDateField" class="hidden">Число месяца<select id="monthlyDate"></select></label>
+      <div id="monthlyWeekdayFields" class="form-row hidden"><label>Какой<select id="monthlyOrdinal"><option value="1">Первый</option><option value="2">Второй</option><option value="3">Третий</option><option value="4">Четвёртый</option><option value="-1">Последний</option></select></label><label>День недели<select id="monthlyWeekday"><option value="1">Понедельник</option><option value="2">Вторник</option><option value="3">Среда</option><option value="4">Четверг</option><option value="5">Пятница</option><option value="6">Суббота</option><option value="0">Воскресенье</option></select></label></div>
+      <label>Напомнить за<select id="reminderLead"><option value="">Без напоминания</option><option value="0">В день события</option><option value="1">За 1 день</option><option value="2">За 2 дня</option><option value="3">За 3 дня</option><option value="7">За неделю</option><option value="14">За 2 недели</option><option value="30">За месяц</option></select></label>
+      <label id="reminderTextField" class="hidden">Текст напоминания <input id="reminderText" maxlength="120" placeholder="По умолчанию — название события" /></label>
+      <label>Повторять до (необязательно) <input id="repeatEnd" type="date" /></label>
+    </details>
+    <div class="form-actions"><button class="button button-ghost" type="button" data-close="taskModal">Отмена</button><button class="button button-primary" type="submit">Сохранить</button></div>
+  </form></section></div>
+  <div id="migrationNotice" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="migrationTitle"><section class="modal"><p class="eyebrow">старые данные</p><h2 id="migrationTitle">Нашлись записи прежней версии</h2><p id="migrationSummary" class="muted"></p><p>Если включена общая база, после импорта эти записи станут видны всем, кто откроет календарь. Автоматически ничего не отправляем.</p><div class="form-actions"><button id="migrationSkip" class="button button-ghost" type="button">Не импортировать</button><button id="migrationImport" class="button button-primary" type="button">Просмотреть и импортировать</button></div></section></div>
+  <div class="modal-backdrop hidden" id="cloudImportModal" role="dialog" aria-modal="true" aria-labelledby="cloudImportTitle"><section class="modal"><p class="eyebrow">общий календарь</p><h2 id="cloudImportTitle">Перенести записи?</h2><p class="muted">База пока пустая. Можно перенести календарь с этого устройства или выбрать ранее скачанную копию. После переноса записи станут общими для всех посетителей ссылки.</p><p id="cloudImportSummary" class="muted">Выберите копию календаря.</p><pre id="cloudImportPreview" class="backup-preview hidden"></pre><label class="backup-file-label">Выбрать копию с устройства<input id="cloudImportFile" type="file" accept="application/json,.json" /></label><p id="cloudImportError" class="connection-error hidden" role="alert"></p><div class="form-actions"><button id="cloudImportSkip" class="button button-ghost" type="button">Пока не переносить</button><button id="cloudImportConfirm" class="button button-primary" type="button" disabled>Перенести в общий календарь</button></div></section></div>
+  <script src="config.js"></script><script src="app.js"></script>
 </body>
 </html>
